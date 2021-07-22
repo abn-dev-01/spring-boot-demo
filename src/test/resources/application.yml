@@ -1,0 +1,30 @@
+#
+# TEST ENVIRONMENT
+#
+debug: true
+
+coin:
+  gaming:
+    PROJECT_ID: ${CRS_PROJECT_ID:230201530122}
+
+## swagger-ui custom path
+#springdoc:
+#  packagesToScan: coin.gaming
+#  swagger-ui:
+#    path: /swagger-ui.html
+#    # Disabling the swagger-ui
+#    enabled: true
+#  api-docs:
+#    path: /api-docs
+#    # Disabling the /v3/api-docs enpoint
+#    enabled: true
+
+spring:
+  devtools:
+    add-properties: ${SRPING_DEV_TOOLS:true}
+
+  application:
+    name: coing-gaming-demo
+    
+server:
+  port: ${PORT:8080}
