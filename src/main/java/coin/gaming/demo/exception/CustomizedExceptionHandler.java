@@ -2,6 +2,7 @@ package coin.gaming.demo.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
 
 @ControllerAdvice
 @RestController
@@ -22,16 +23,11 @@ public class CustomizedExceptionHandler extends AbstractCustomizedExceptionHandl
 //    public final ResponseEntity<Object> handleCommon400BadExpressions(Exception ex, WebRequest request) {
 //
 //        var status = HttpStatus.BAD_REQUEST;
-//        final var name = request != null && ((ServletWebRequest) request).getHttpMethod() != null
-//            ? ((ServletWebRequest) request).getHttpMethod().name()
-//            : NO_NAME;
-//        final var description = request != null ? request.getDescription(false) : NO_DESCRIPTION;
-//
 //        var exceptionResponse = new ExceptionResponse(
 //            LocalDateTime.now().toString(),
 //            status.value(),
 //            status.getReasonPhrase(),
-//            name + " " + description,
+//              getHttpMethodName((ServletWebRequest) request) + " " + description,
 //            ex.getMessage());
 //        return new ResponseEntity<>(exceptionResponse, status);
 //    }

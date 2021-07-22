@@ -17,7 +17,7 @@ public class AbstractCustomizedExceptionHandler extends ResponseEntityExceptionH
     /**
      * 500 INTERNAL_ERROR ~ For each Unhandled Errors.
      */
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({Exception.class, InternalServerErrorException.class})
     public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -34,7 +34,7 @@ public class AbstractCustomizedExceptionHandler extends ResponseEntityExceptionH
     /**
      * 400 BAD_REQUEST
      */
-    @ExceptionHandler({HttpClientErrorException.BadRequest.class})
+    @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
     public final ResponseEntity<Object> handleBadRequestException(Exception ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -51,7 +51,7 @@ public class AbstractCustomizedExceptionHandler extends ResponseEntityExceptionH
     /**
      * 404 NOT_FOUND
      */
-    @ExceptionHandler(HttpClientErrorException.NotFound.class)
+    @ExceptionHandler(NotFoundException.class)
     public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request) {
 
         HttpStatus status = HttpStatus.NOT_FOUND;
