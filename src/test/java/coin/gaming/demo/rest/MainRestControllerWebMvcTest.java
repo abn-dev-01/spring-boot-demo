@@ -35,7 +35,6 @@ class MainRestControllerWebMvcTest {
                 .post(urlRedirectEndpoint)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(new UserAuthorizationRequest(USER, PASS)))
         )
            .andExpect(status().is3xxRedirection())
         ;

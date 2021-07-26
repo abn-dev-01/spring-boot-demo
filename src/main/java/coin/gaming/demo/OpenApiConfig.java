@@ -1,4 +1,4 @@
-package coin.gaming.demo.config;
+package coin.gaming.demo;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;

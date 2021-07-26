@@ -3,7 +3,32 @@ debug: true
 
 coin:
   gaming:
-    PROJECT_ID: ${CRS_PROJECT_ID:230201530122}
+    api:
+      onetouch:
+        url: ${ONE_TOUCH_BASE_URL:https://test-platform.onetouch.io/api}
+        game_path: ${ONE_TOUCH_GAME_PATH:/operator/generic/v2/game/url}
+    retry:
+      game_url:
+        max_attempts: ${GAME_URL_RETRY_MAX_ATTEMPTS:3}
+        timeout: ${GAME_URL_RETRY_TIMEOUT:30000}
+
+feign:
+  compression:
+    request:
+      enabled: true
+    retxsponse:
+      enabled: true
+      useGzipDecoder: true
+  httpclient:
+    disable-ssl-validation: false
+  client:
+    config:
+      # ?????? default: ? ?? ??? ???? ~ ????? ??????????? ??? ??????????? ????? ??????? ???? ?????????
+      default:
+        # FULL | BASIC | HEADERS | NONE ~ ?? ????? ??????????????
+        loggerLevel: FULL
+        connectTimeout: 5000
+        readTimeout: 5000
 
 # swagger-ui custom path
 springdoc:
@@ -23,6 +48,6 @@ spring:
 
   application:
     name: coing-gaming-demo
-    
+
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8123}
