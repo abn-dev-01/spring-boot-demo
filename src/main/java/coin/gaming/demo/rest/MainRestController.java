@@ -3,9 +3,13 @@ package coin.gaming.demo.rest;
 import coin.gaming.demo.AppProperties;
 import coin.gaming.demo.Constants;
 import coin.gaming.demo.common.Utils;
+import coin.gaming.demo.exception.InternalServerErrorException;
 import coin.gaming.demo.model.RedirectRequest;
 import coin.gaming.demo.service.OneTouchOpenFeignClient;
+import coin.gaming.demo.service.OneTouchService;
 import coin.gaming.demo.service.RetryTemplateService;
+import coin.gaming.demo.service.SignService;
+import coin.gaming.demo.util.CertificateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,6 +54,9 @@ public class MainRestController {
     private final OneTouchOpenFeignClient oneTouchOpenFeignClient;
     private final RetryTemplateService retryTemplateService;
     private final AppProperties appProperties;
+    private final SignService signService;
+    private final OneTouchService oneTouchService;
+
 
     @Operation(summary = "Read CoinGaming endpoint and redirecting to a url received in a Response.")
     @ApiResponses(value = {
@@ -92,13 +99,14 @@ public class MainRestController {
                                                  .gameId(gameId)
                                                  .currency(currency)
                                                  .build();
-        var stringRequest = Utils.asJsonString(request);
-        var xSignatura = "";
+        final var stringRequest = Utils.asJsonString(request);
+        final var xSignature = signService.getSignature(stringRequest);
 
         retryTemplateService.retry(
             appProperties.getRetryGameUrlMaxAttempts(),
             appProperties.getRetryGameUrlTimeout(),
-            context -> oneTouchOpenFeignClient.getRedirectUrl(xSignatura, request)
+            context -> oneTouchService.invokeGetGameUrl(xSignature, stringRequest)
+//            context -> oneTouchOpenFeignClient.getRedirectUrl(xSignature, stringRequest)
         );
 
         var redirectUrl = "http://yahoo.com";

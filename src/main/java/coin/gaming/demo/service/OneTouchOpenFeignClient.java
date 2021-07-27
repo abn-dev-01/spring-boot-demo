@@ -1,6 +1,5 @@
 package coin.gaming.demo.service;
 
-import coin.gaming.demo.model.RedirectRequest;
 import coin.gaming.demo.model.RedirectResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -26,6 +25,6 @@ public interface OneTouchOpenFeignClient {
         //  using the public key.
     RedirectResponse getRedirectUrl(
         @RequestHeader(name = "xSignature") String xSignature,
-        @RequestBody RedirectRequest request
+        @RequestBody String request
     );
 }
