@@ -14,7 +14,7 @@ coin:
     cert:
       # we can put our files outside application
       private_key: ${CERT_PRIVATE_KEY_FILENAME:ssl/private_test_task.pem}
-      public_key: ${CERT_PUBLIC_KEY_FILENAME:ssl/public_test_task.pem}}
+      public_key: ${CERT_PUBLIC_KEY_FILENAME:ssl/public_test_task.pem}
 
 feign:
   compression:

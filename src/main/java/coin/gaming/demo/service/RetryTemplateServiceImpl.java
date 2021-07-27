@@ -1,10 +1,10 @@
 package coin.gaming.demo.service;
 
+import coin.gaming.demo.AppConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.retry.RetryCallback;
-import org.springframework.retry.policy.SimpleRetryPolicy;
-import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,22 +16,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RetryTemplateServiceImpl implements RetryTemplateService {
 
+    // beans
     private final OneTouchOpenFeignClient oneTouchOpenFeignClient;
+    @Qualifier(AppConfig.COMMON_RETRY_QUALIFIER_NAME)
+    private final RetryTemplate retryTemplate;
 
     @Override
-    public <T> T retry(int maxAttempts, Long timeout, RetryCallback<T, Exception> retryCallback) throws Exception {
-        SimpleRetryPolicy policy = new SimpleRetryPolicy();
-        // Set the max retry attempts
-        policy.setMaxAttempts(maxAttempts);
-
-        TimeoutRetryPolicy retryPolicy = new TimeoutRetryPolicy();
-        retryPolicy.setTimeout(timeout);
-
-        // Use the policy...
-        RetryTemplate template = new RetryTemplate();
-        template.setRetryPolicy(retryPolicy);
-        template.setRetryPolicy(policy);
-
-        return template.execute(retryCallback);
+    public <T> T retry(RetryCallback<T, Exception> retryCallback) throws Exception {
+        LOG.debug("RetryTemplate execution...");
+        return retryTemplate.execute(retryCallback);
     }
 }

@@ -1,14 +1,19 @@
 package coin.gaming.demo.rest;
 
 import coin.gaming.demo.AppProperties;
+import coin.gaming.demo.TestConstants;
 import coin.gaming.demo.model.RedirectResponse;
 import coin.gaming.demo.service.OneTouchService;
 import coin.gaming.demo.service.RetryTemplateService;
 import coin.gaming.demo.service.SignService;
+import feign.FeignException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,18 +25,16 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static coin.gaming.demo.Constants.SLASH;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.mockito.Mockito.when;
 
-
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @ContextConfiguration(classes = {MainRestController.class, AppProperties.class})
 @WebMvcTest
-class MainRestControllerWebMvcTest {
+class MainRestControllerWebMvcTest extends TestConstants {
     @Autowired
     private MockMvc mvc;
 
@@ -44,6 +47,7 @@ class MainRestControllerWebMvcTest {
     @MockBean
     private OneTouchService oneTouchService;
 
+
     @BeforeEach
     void setUp() {
     }
@@ -53,6 +57,11 @@ class MainRestControllerWebMvcTest {
     void redirectToCoinGamingUrl() throws Exception {
         final var urlRedirectEndpoint =
             MainRestController.ENDPOINT_URL_PATH_GLOBAL + SLASH + MainRestController.ENDPOINT_URL_REDIRECT;
+
+        mockRedirectResponse.setUrl(mockUrl);
+        when(retryTemplateService.retry(any()))
+            .thenReturn(mockRedirectResponse);
+
         mvc.perform(
             MockMvcRequestBuilders
                 .post(urlRedirectEndpoint)
@@ -72,11 +81,8 @@ class MainRestControllerWebMvcTest {
         String expectedResponseJsonString = "{}";
 
         // mocks
-        final var mockRedirectResponse = new RedirectResponse();
-        final var mockUrl = "http://yahoo.com";
-
         mockRedirectResponse.setUrl(mockUrl);
-        when(retryTemplateService.retry(anyInt(), anyLong(), any()))
+        when(retryTemplateService.retry(any()))
             .thenReturn(mockRedirectResponse);
 
         mvc.perform(
@@ -86,9 +92,41 @@ class MainRestControllerWebMvcTest {
                 .contentType(MediaType.APPLICATION_JSON)
         )
            .andExpect(status().is3xxRedirection())
-           .andExpect(
-               redirectedUrl(mockUrl)
-           )
+           .andExpect(redirectedUrl(mockUrl))
         ;
+    }
+
+    @Test
+    @DisplayName("Endpoint Redirection test - Unauthorised.")
+    void redirectToCoinGamingUrlUnauthorised() throws Exception {
+
+        final var urlRedirectEndpoint =
+            MainRestController.ENDPOINT_URL_PATH_GLOBAL + SLASH + MainRestController.ENDPOINT_URL_REDIRECT;
+        String expectedResponseJsonString = "{}";
+
+        // mocks
+        final var mockRedirectResponse = new RedirectResponse();
+        mockRedirectResponse.setUrl(mockUrl);
+        final var feignBadRequestMsg = "FEIGN BAD REQUEST";
+
+        final FeignException.Unauthorized unauthorized = getFeignExceptionUnauthorized(feignBadRequestMsg);
+
+        when(retryTemplateService.retry(any()))
+            .thenThrow(unauthorized);
+
+        try {
+            mvc.perform(
+                MockMvcRequestBuilders
+                    .post(urlRedirectEndpoint)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+               .andExpect(status().isUnauthorized())
+            ;
+            Assertions.fail("Exception was not produced.");
+        } catch (Exception e) {
+            Assertions.assertTrue(e.getCause() instanceof FeignException.Unauthorized);
+            Assertions.assertEquals(feignBadRequestMsg, e.getCause().getMessage());
+        }
     }
 }

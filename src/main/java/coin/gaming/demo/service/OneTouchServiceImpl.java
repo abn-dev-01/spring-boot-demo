@@ -14,7 +14,7 @@ public class OneTouchServiceImpl implements OneTouchService {
 
     @Override
     public RedirectResponse invokeGetGameUrl(final String xSignature, final String stringRequest) {
-        LOG.debug("Invoked Get Game URL.");
+        LOG.debug(" >> Invoked Get Game URL ... ");
         return oneTouchOpenFeignClient.getRedirectUrl(xSignature, stringRequest);
     }
 }

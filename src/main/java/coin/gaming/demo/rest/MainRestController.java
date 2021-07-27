@@ -97,8 +97,6 @@ public class MainRestController {
         final var xSignature = signService.getSignature(stringRequest);
 
         var response = retryTemplateService.retry(
-            appProperties.getRetryGameUrlMaxAttempts(),
-            appProperties.getRetryGameUrlTimeout(),
             context -> oneTouchService.invokeGetGameUrl(xSignature, stringRequest)
         );
 
