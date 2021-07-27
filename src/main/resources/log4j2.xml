@@ -20,7 +20,7 @@
 
     <Loggers>
         <!-- avoid duplicated logs with additivity=false -->
-        <Logger name="coin.gaming" level="debug" additivity="false">
+        <Logger name="coin.gaming.demo" level="debug" additivity="false">
             <AppenderRef ref="LogToConsole"/>
             <AppenderRef ref="LogToRollingRandomAccessFile"/>
         </Logger>
