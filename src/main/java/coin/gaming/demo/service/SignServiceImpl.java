@@ -32,8 +32,6 @@ public class SignServiceImpl implements SignService {
     @Override
     public String getSignature(String stringRequest) {
         try {
-//            var privateKeyResource = resourceLoader.getResource("classpath:" + privateKeyFilename);
-//            final var path = privateKeyResource.getURI().getPath();
             final var path = new ClassPathResource(privateKeyFilename).getFile();
             LOG.debug("Path of PrivateKey: {}", () -> path);
 

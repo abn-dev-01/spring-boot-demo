@@ -1,6 +1,5 @@
 package coin.gaming.demo.service;
 
-import coin.gaming.demo.exception.InternalServerErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.retry.RetryCallback;
@@ -17,7 +16,7 @@ public class RetryTemplateServiceImpl implements RetryTemplateService {
     private final OneTouchOpenFeignClient oneTouchOpenFeignClient;
 
     @Override
-    public <T> T retry(int maxAttempts, Long timeout, RetryCallback<T, Exception> retryCallback) {
+    public <T> T retry(int maxAttempts, Long timeout, RetryCallback<T, Exception> retryCallback) throws Exception {
         SimpleRetryPolicy policy = new SimpleRetryPolicy();
         // Set the max retry attempts
         policy.setMaxAttempts(maxAttempts);
@@ -30,12 +29,6 @@ public class RetryTemplateServiceImpl implements RetryTemplateService {
         template.setRetryPolicy(retryPolicy);
         template.setRetryPolicy(policy);
 
-        final var errorMessage = " failed. ";
-        try {
-            return template.execute(retryCallback);
-        } catch (Exception e) {
-            LOG.error(errorMessage, e);
-            throw new InternalServerErrorException(errorMessage + e.getMessage());
-        }
+        return template.execute(retryCallback);
     }
 }

@@ -83,7 +83,7 @@ public class MainRestController {
     }
     */
     @PostMapping(MainRestController.ENDPOINT_URL_REDIRECT)
-    public RedirectView redirectToCoinGamingUrl() {
+    public RedirectView redirectToCoinGamingUrl() throws Exception {
         final var msg = "{} Redirect endpoint";
         LOG.debug(msg, "START");
 

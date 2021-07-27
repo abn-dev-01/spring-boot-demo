@@ -3,7 +3,6 @@ package coin.gaming.demo.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -20,8 +19,8 @@ public class AbstractCustomizedExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({Exception.class, InternalServerErrorException.class})
     public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
 
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        var exceptionResponse = new ExceptionResponse(
+        final var status = HttpStatus.INTERNAL_SERVER_ERROR;
+        final var exceptionResponse = new ExceptionResponse(
             LocalDateTime.now().toString(),
             status.value(),
             "Unexpected error. " + ex.getMessage(),
@@ -37,8 +36,8 @@ public class AbstractCustomizedExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
     public final ResponseEntity<Object> handleBadRequestException(Exception ex, WebRequest request) {
 
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        var exceptionResponse = new ExceptionResponse(
+        final var status = HttpStatus.BAD_REQUEST;
+        final var exceptionResponse = new ExceptionResponse(
             LocalDateTime.now().toString(),
             status.value(),
             "Invalid request. " + ex.getMessage(),
@@ -54,8 +53,8 @@ public class AbstractCustomizedExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(NotFoundException.class)
     public final ResponseEntity<Object> handleNotFoundException(Exception ex, WebRequest request) {
 
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        var exceptionResponse = new ExceptionResponse(
+        final var status = HttpStatus.NOT_FOUND;
+        final var exceptionResponse = new ExceptionResponse(
             LocalDateTime.now().toString(),
             status.value(),
             "Data not found. " + ex.getMessage(),
