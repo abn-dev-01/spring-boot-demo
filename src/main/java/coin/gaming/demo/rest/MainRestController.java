@@ -3,13 +3,10 @@ package coin.gaming.demo.rest;
 import coin.gaming.demo.AppProperties;
 import coin.gaming.demo.Constants;
 import coin.gaming.demo.common.Utils;
-import coin.gaming.demo.exception.InternalServerErrorException;
 import coin.gaming.demo.model.RedirectRequest;
-import coin.gaming.demo.service.OneTouchOpenFeignClient;
 import coin.gaming.demo.service.OneTouchService;
 import coin.gaming.demo.service.RetryTemplateService;
 import coin.gaming.demo.service.SignService;
-import coin.gaming.demo.util.CertificateUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,7 +48,6 @@ public class MainRestController {
     public static final String ENDPOINT_URL_TRANSACTION_BET = "transaction/bet";
 
     // beans
-    private final OneTouchOpenFeignClient oneTouchOpenFeignClient;
     private final RetryTemplateService retryTemplateService;
     private final AppProperties appProperties;
     private final SignService signService;
@@ -106,7 +102,6 @@ public class MainRestController {
             appProperties.getRetryGameUrlMaxAttempts(),
             appProperties.getRetryGameUrlTimeout(),
             context -> oneTouchService.invokeGetGameUrl(xSignature, stringRequest)
-//            context -> oneTouchOpenFeignClient.getRedirectUrl(xSignature, stringRequest)
         );
 
         var redirectUrl = "http://yahoo.com";

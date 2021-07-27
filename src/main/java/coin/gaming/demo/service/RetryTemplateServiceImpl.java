@@ -8,6 +8,9 @@ import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 
+/**
+ * Unified the RetryTemplate Service.
+ */
 @Service
 @Log4j2
 @RequiredArgsConstructor

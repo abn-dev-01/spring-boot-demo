@@ -5,7 +5,18 @@ debug: true
 
 coin:
   gaming:
-    PROJECT_ID: ${CRS_PROJECT_ID:230201530122}
+    api:
+      onetouch:
+        url: ${ONE_TOUCH_BASE_URL:https://test-platform.onetouch.io/api}
+        game_path: ${ONE_TOUCH_GAME_PATH:/operator/generic/v2/game/url}
+    retry:
+      game_url:
+        max_attempts: ${GAME_URL_RETRY_MAX_ATTEMPTS:3}
+        timeout: ${GAME_URL_RETRY_TIMEOUT:30000}
+    cert:
+      # we can put our files outside application
+      private_key: ${CERT_PRIVATE_KEY_FILENAME:ssl/private_test_task.pem}
+      public_key: ${CERT_PUBLIC_KEY_FILENAME:ssl/public_test_task.pem}}
 
 ## swagger-ui custom path
 #springdoc:

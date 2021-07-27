@@ -43,3 +43,4 @@ out/
 
 ### MAVEN ###
 target/
+/logs/TSE-app.log
