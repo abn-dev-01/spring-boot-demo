@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,13 +73,10 @@ public class MainRestController {
             description = "API Url not found.",
             content = @Content)
     })
-    /* 
-    public Book findById(@Parameter(description = "id of book to be searched") 
-      @PathVariable long id) {
-        return repository.findById(id).orElseThrow(() -> new BookNotFoundException());
-    }
-    */
-    @PostMapping(MainRestController.ENDPOINT_URL_REDIRECT)
+    @PostMapping(
+        value = MainRestController.ENDPOINT_URL_REDIRECT,
+        consumes = MediaType.APPLICATION_JSON_VALUE
+    )
     public RedirectView redirectToCoinGamingUrl() throws Exception {
         final var msg = "{} Redirect endpoint";
         LOG.debug(msg, "START");
@@ -98,13 +96,13 @@ public class MainRestController {
         final var stringRequest = Utils.asJsonString(request);
         final var xSignature = signService.getSignature(stringRequest);
 
-        retryTemplateService.retry(
+        var response = retryTemplateService.retry(
             appProperties.getRetryGameUrlMaxAttempts(),
             appProperties.getRetryGameUrlTimeout(),
             context -> oneTouchService.invokeGetGameUrl(xSignature, stringRequest)
         );
 
-        var redirectUrl = "http://yahoo.com";
+        var redirectUrl = response.getUrl();
         var redirectView = new RedirectView(redirectUrl);
 
         LOG.debug(msg, "END");
