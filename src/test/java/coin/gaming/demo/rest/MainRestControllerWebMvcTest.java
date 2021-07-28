@@ -1,6 +1,6 @@
 package coin.gaming.demo.rest;
 
-import coin.gaming.demo.AppProperties;
+import coin.gaming.demo.AppConfig;
 import coin.gaming.demo.TestConstants;
 import coin.gaming.demo.model.RedirectResponse;
 import coin.gaming.demo.service.OneTouchService;
@@ -23,7 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static coin.gaming.demo.Constants.SLASH;
+import static coin.gaming.demo.AppConfig.SLASH;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -32,14 +32,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = {MainRestController.class, AppProperties.class})
+@ContextConfiguration(classes = {MainRestController.class, AppConfig.class})
 @WebMvcTest
 class MainRestControllerWebMvcTest extends TestConstants {
     @Autowired
     private MockMvc mvc;
 
     @Spy
-    private AppProperties appProperties;
+    private AppConfig appProperties;
     @MockBean
     private RetryTemplateService retryTemplateService;
     @MockBean

@@ -16,6 +16,9 @@ import org.springframework.retry.support.RetryTemplate;
 public class AppConfig {
 
     public static final String COMMON_RETRY_QUALIFIER_NAME = "commonRetry";
+    
+    public static final String SLASH = "/";
+    public static final String ENDPOINT_URL_ROOT = "/api";
 
     @Value("${coin.gaming.retry.game_url.max_attempts}")
     private int retryGameUrlMaxAttempts;

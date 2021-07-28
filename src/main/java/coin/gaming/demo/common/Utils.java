@@ -12,9 +12,7 @@ import java.util.Map;
 
 public final class Utils {
 
-    public Utils getInstance() {
-        return new Utils();
-    }
+    private Utils() {}
 
     /**
      * Generates a JSON from a Java Object.
@@ -35,15 +33,33 @@ public final class Utils {
         }
     }
 
+    /**
+     * Calculate seconds between start and end.
+     *
+     * @param start in milliseconds (System.currentTimeMillis())
+     * @param end   in milliseconds (System.currentTimeMillis())
+     *
+     * @return
+     */
     public static long calSeconds(long start, long end) {
         return (end - start) / 1000;
     }
 
-    public static int safeSize(Collection<?> obj) {
-        return obj == null ? 0 : obj.size();
+    /**
+     * @param collection
+     *
+     * @return safe against NPE size of the given collection
+     */
+    public static int safeSize(Collection<?> collection) {
+        return collection == null ? 0 : collection.size();
     }
 
-    public static int safeSize(Map<?, ?> obj) {
-        return obj == null ? 0 : obj.size();
+    /**
+     * @param map
+     *
+     * @return safe against NPE size of the given map.
+     */
+    public static int safeSize(Map<?, ?> map) {
+        return map == null ? 0 : map.size();
     }
 }
