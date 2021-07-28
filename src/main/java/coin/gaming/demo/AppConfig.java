@@ -15,7 +15,7 @@ import org.springframework.retry.support.RetryTemplate;
 @Getter
 public class AppConfig {
 
-    public final static String COMMON_RETRY_QUALIFIER_NAME = "commonRetry";
+    public static final String COMMON_RETRY_QUALIFIER_NAME = "commonRetry";
 
     @Value("${coin.gaming.retry.game_url.max_attempts}")
     private int retryGameUrlMaxAttempts;
