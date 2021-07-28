@@ -1,7 +1,6 @@
 package coin.gaming.demo.rest;
 
-import coin.gaming.demo.AppProperties;
-import coin.gaming.demo.Constants;
+import coin.gaming.demo.AppConfig;
 import coin.gaming.demo.common.Utils;
 import coin.gaming.demo.model.RedirectRequest;
 import coin.gaming.demo.service.OneTouchService;
@@ -35,14 +34,14 @@ import java.util.UUID;
     }
 )
 @RestController
-@RequestMapping(Constants.ENDPOINT_URL_ROOT)
+@RequestMapping(AppConfig.ENDPOINT_URL_ROOT)
 @Log4j2
 @RequiredArgsConstructor
 @Tag(name = "MainRestController", description = "Main REST Controller.")
 public class MainRestController {
 
     // Request Mapping path for current RestController:
-    public static final String ENDPOINT_URL_PATH_GLOBAL = Constants.ENDPOINT_URL_ROOT;
+    public static final String ENDPOINT_URL_PATH_GLOBAL = AppConfig.ENDPOINT_URL_ROOT;
 
     // Request Mapping paths current RestController...
     public static final String ENDPOINT_URL_REDIRECT = "game";
@@ -50,7 +49,6 @@ public class MainRestController {
 
     // beans
     private final RetryTemplateService retryTemplateService;
-    private final AppProperties appProperties;
     private final SignService signService;
     private final OneTouchService oneTouchService;
 

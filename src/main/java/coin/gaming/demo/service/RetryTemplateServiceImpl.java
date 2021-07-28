@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Unified the RetryTemplate Service.
+ * ( ~ Some guys think this Service is unnecessary)
  */
 @Service
 @Log4j2
