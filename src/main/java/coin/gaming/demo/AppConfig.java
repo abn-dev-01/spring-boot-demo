@@ -1,7 +1,9 @@
 package coin.gaming.demo;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
@@ -10,12 +12,17 @@ import org.springframework.retry.support.RetryTemplate;
 
 @Configuration
 @RequiredArgsConstructor
+@Getter
 public class AppConfig {
 
     public final static String COMMON_RETRY_QUALIFIER_NAME = "commonRetry";
 
-    // beans
-    private final AppProperties appProperties;
+    @Value("${coin.gaming.retry.game_url.max_attempts}")
+    private int retryGameUrlMaxAttempts;
+
+    @Value("${coin.gaming.retry.game_url.timeout}")
+    private long retryGameUrlTimeout;
+
 
     @Bean
     @Qualifier(AppConfig.COMMON_RETRY_QUALIFIER_NAME)
@@ -23,11 +30,11 @@ public class AppConfig {
         RetryTemplate retryTemplate = new RetryTemplate();
 
         FixedBackOffPolicy fixedBackOffPolicy = new FixedBackOffPolicy();
-        fixedBackOffPolicy.setBackOffPeriod(appProperties.getRetryGameUrlTimeout());
+        fixedBackOffPolicy.setBackOffPeriod(retryGameUrlTimeout);
         retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
 
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-        retryPolicy.setMaxAttempts(appProperties.getRetryGameUrlMaxAttempts());
+        retryPolicy.setMaxAttempts(retryGameUrlMaxAttempts);
         retryTemplate.setRetryPolicy(retryPolicy);
 
         return retryTemplate;
