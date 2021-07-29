@@ -12,6 +12,9 @@ The project based on SPRING-BOOT, Gradle, Java-11, Spring-cloud(OpenFeign only),
 
 * OpenFeign produce simple and fast integration for invoking remote URL API.
 
+* There is RSA SHA256 Private and Public keys. The Private Key sign a requests then it puts in Header of the request.
+  The public key verify the request on the Server side.
+
 ### Contacts
 
 Do you have any ideas? 

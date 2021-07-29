@@ -1,4 +1,4 @@
-package coin.gaming.demo.testing;
+package coin.gaming.demo.util;
 
 import org.springframework.http.MediaType;
 

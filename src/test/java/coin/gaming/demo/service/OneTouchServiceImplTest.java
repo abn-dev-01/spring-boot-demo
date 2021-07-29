@@ -1,9 +1,7 @@
 package coin.gaming.demo.service;
 
 import coin.gaming.demo.AppConfig;
-import coin.gaming.demo.AppProperties;
 import coin.gaming.demo.TestConstants;
-import coin.gaming.demo.rest.MainRestController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,13 +14,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@ContextConfiguration(classes = {OneTouchServiceImpl.class, AppProperties.class, AppConfig.class})
+@ContextConfiguration(classes = {OneTouchServiceImpl.class, AppConfig.class})
 @WebMvcTest
 class OneTouchServiceImplTest extends TestConstants {
     @Autowired
